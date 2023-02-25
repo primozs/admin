@@ -1,10 +1,4 @@
-import {
-  LineItem,
-  LineItemTaxLine,
-  MoneyAmount,
-  Order,
-  Region,
-} from "@medusajs/medusa"
+import { LineItemTaxLine, MoneyAmount, Order, Region } from "@medusajs/medusa"
 import { PricedVariant } from "@medusajs/medusa/dist/types/pricing"
 import { currencies } from "./currencies"
 
@@ -95,7 +89,7 @@ export function persistedPrice(currency: string, amount: number): number {
 }
 
 export const stringDisplayPrice = ({ amount, currencyCode }) => {
-  if (!amount || !currencyCode) {
+  if (typeof amount === "undefined" || !currencyCode) {
     return `N/A`
   }
 

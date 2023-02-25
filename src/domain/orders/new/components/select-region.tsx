@@ -2,13 +2,15 @@ import { useAdminRegions } from "medusa-react"
 import React, { useEffect, useMemo } from "react"
 import { Controller, useWatch } from "react-hook-form"
 import { SteppedContext } from "../../../../components/molecules/modal/stepped-modal"
-import Select from "../../../../components/molecules/select"
+import { NextSelect } from "../../../../components/molecules/select/next-select"
 import { useNewOrderForm } from "../form"
 
 const SelectRegionScreen = () => {
   const { enableNextPage, disableNextPage } = React.useContext(SteppedContext)
 
-  const { control } = useNewOrderForm()
+  const {
+    form: { control },
+  } = useNewOrderForm()
 
   const reg = useWatch({
     control,
@@ -37,14 +39,14 @@ const SelectRegionScreen = () => {
   }, [reg])
 
   return (
-    <div className="flex flex-col min-h-[705px]">
+    <div className="flex min-h-[705px] flex-col">
       <span className="inter-base-semibold mb-4">Choose region</span>
       <Controller
         control={control}
         name="region"
         render={({ field: { onChange, value } }) => {
           return (
-            <Select
+            <NextSelect
               label="Region"
               onChange={onChange}
               value={value}

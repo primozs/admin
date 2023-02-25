@@ -1,5 +1,4 @@
 import { Region } from "@medusajs/medusa"
-import React from "react"
 import { Controller, UseFormReturn } from "react-hook-form"
 import IncludesTaxTooltip from "../../../../../components/atoms/includes-tax-tooltip"
 import Switch from "../../../../../components/atoms/switch"
@@ -43,10 +42,8 @@ const ShippingOptionForm = ({ form, region, isEdit = false }: Props) => {
     formState: { errors },
   } = form
 
-  const {
-    shippingProfileOptions,
-    fulfillmentOptions,
-  } = useShippingOptionFormData(region.id)
+  const { shippingProfileOptions, fulfillmentOptions } =
+    useShippingOptionFormData(region.id)
 
   return (
     <div>
@@ -85,11 +82,14 @@ const ShippingOptionForm = ({ form, region, isEdit = false }: Props) => {
             <Controller
               control={control}
               name="price_type"
-              render={({ field }) => {
+              render={({ field: { onChange, value, onBlur } }) => {
                 return (
                   <NextSelect
                     label="Price Type"
                     required
+                    value={value}
+                    onChange={onChange}
+                    onBlur={onBlur}
                     options={[
                       {
                         label: "Flat Rate",
@@ -101,7 +101,6 @@ const ShippingOptionForm = ({ form, region, isEdit = false }: Props) => {
                       },
                     ]}
                     placeholder="Choose a price type"
-                    {...field}
                     errors={errors}
                   />
                 )
@@ -193,7 +192,7 @@ const ShippingOptionForm = ({ form, region, isEdit = false }: Props) => {
                 region.currency_code
               ),
               validate: (value) => {
-                if (!value) {
+                if (value === null) {
                   return true
                 }
 
@@ -217,7 +216,7 @@ const ShippingOptionForm = ({ form, region, isEdit = false }: Props) => {
                     }
                   />
                   <PriceFormInput
-                    amount={value || undefined}
+                    amount={typeof value === "number" ? value : undefined}
                     onChange={onChange}
                     name="requirements.min_subtotal.amount"
                     currencyCode={region.currency_code}
@@ -237,7 +236,7 @@ const ShippingOptionForm = ({ form, region, isEdit = false }: Props) => {
                 region.currency_code
               ),
               validate: (value) => {
-                if (!value) {
+                if (value === null) {
                   return true
                 }
 
@@ -261,7 +260,7 @@ const ShippingOptionForm = ({ form, region, isEdit = false }: Props) => {
                     }
                   />
                   <PriceFormInput
-                    amount={value || undefined}
+                    amount={typeof value === "number" ? value : undefined}
                     onChange={onChange}
                     name="requirements.max_subtotal.amount"
                     currencyCode={region.currency_code}
